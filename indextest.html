@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FUCHSBAUBOXSHOP</title>
+  
+  <!-- Falls du es explizit verlinken willst (empfohlen) -->
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <style>
+    body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  overflow-x: hidden;
+
+  /* DIE NEUE LANGSAME ANIMATION */
+  background-color: #ffaed5; /* Startfarbe */
+  animation: slowPinkPulse 30s infinite alternate ease-in-out;
+}
+
+@keyframes slowPinkPulse {
+  0% {
+    background-color: #ffaed5; /* Dein Fuchsbau-Pink */
+  }
+  100% {
+    background-color: #ff007f; /* Knalliges Neon-Pink */
+  }
+}
+
+    /* AGE GATE OVERLAY STYLING */
+    #age-gate {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #ffaed5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999999;
+      transition: opacity 0.5s ease;
+    }
+
+    .age-gate-content {
+      background: black;
+      color: white;
+      padding: 40px;
+      border-radius: 20px;
+      border: 4px solid white;
+      max-width: 400px;
+      width: 85%;
+      box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    }
+
+   /* Der neue Container für die Buttons */
+    .age-gate-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px; /* Abstand zwischen den Buttons */
+      margin-top: 20px;
+    }
+
+    .age-btn {
+      padding: 15px 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      font-size: 16px;
+      transition: transform 0.2s;
+      flex: 1; /* Beide Buttons werden gleich groß */
+      max-width: 150px; /* Verhindert, dass sie zu breit werden */
+    }
+
+    .age-btn.confirm { background: #ffaed5; color: black; }
+    .age-btn.deny { background: #555; color: white; } /* margin-top entfernt */
+    
+    .age-btn:hover { transform: scale(1.05); }
+
+    <!-- SECRET WELCOME MODAL -->
+<div id="secret-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000000; display: flex; justify-content: center; align-items: center;">
+  <div style="background: black; border: 4px solid #ffaed5; padding: 40px; border-radius: 20px; max-width: 400px; width: 85%; text-align: center; box-shadow: 0 0 50px #ffaed5;">
+    <div style="font-size: 50px; margin-bottom: 10px;">🦊</div>
+    <h2 style="color: #ffaed5; margin: 0; font-size: 28px; text-transform: uppercase;">GEFUNDEN!</h2>
+    <p style="color: white; line-height: 1.5; margin: 20px 0;">Glückwunsch, echter Fuchs!<br>Du hast den geheimen Zugang zum Fuchsbau entdeckt.</p>
+    <p style="color: #ffaed5; font-weight: bold; font-size: 18px;">Hier gibts die Box zum<br>absoluten Ehrenpreis.</p>
+    
+    <button onclick="closeSecretModal()" style="background: #ffaed5; color: black; border: none; padding: 15px 30px; font-size: 18px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%;">STARK, ZEIG HER!</button>
+  </div>
+</div>
+
+
+    /* GLITCH EFFEKT STYLING */
+    #glitch-trigger {
+      position: fixed;
+      font-size: 35px;
+      cursor: pointer;
+      z-index: 20000;
+      transition: opacity 0.5s ease-in-out, transform 0.2s;
+      user-select: none;
+      filter: drop-shadow(0 0 5px rgba(0,0,0,0.2));
+      opacity: 0; 
+      pointer-events: none;
+    }
+
+   
+
+    /* KOFFER EFFEKT STYLING */
+    .flying-box {
+      position: fixed;
+      font-size: 35px;
+      pointer-events: none;
+      z-index: 15000;
+      animation: fly-away 3s forwards cubic-bezier(0.1, 0.8, 0.3, 1);
+    }
+
+    @keyframes fly-away {
+      0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+      85% { opacity: 1; }
+      100% { 
+        transform: translate(var(--x), var(--y)) rotate(var(--r)); 
+        opacity: 0; 
+      }
+    }
+
+    /* RABATT OVERLAY STYLING */
+    #discount-overlay {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.5);
+      background-color: black;
+      color: white;
+      padding: 30px;
+      border-radius: 20px;
+      border: 4px solid white;
+      z-index: 30000;
+      width: 80%;
+      max-width: 400px;
+      box-shadow: 0 0 100px rgba(0,0,0,0.8);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #discount-overlay.active {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .discount-btn {
+      background-color: #ffaed5 !important;
+      color: black !important;
+      width: 100% !important;
+      margin-top: 15px;
+      font-size: 26px !important;
+      animation: pulse-btn 1.5s infinite;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    @keyframes pulse-btn {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .close-overlay {
+      display: block;
+      margin-top: 20px;
+      color: #ffaed5;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .header-logo { margin: 20px 0 0 0; display: flex; justify-content: center; }
+    .header-logo img {
+      width: 90%;
+      max-width: 550px;
+      height: auto;
+      transition: transform 0.3s ease;
+      animation: pulse-animation 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse-animation {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    .kiel-subtitle {
+      display: block;      
+      color: black;
+      font-weight: bold;
+      font-size: 14px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+      opacity: 0.7;
+    }
+
+    .images {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 15px;
+      padding: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .images::-webkit-scrollbar { display: none; }
+
+    .images img {
+      flex: 0 0 85%;
+      max-width: 350px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      border: 2px solid white;
+    }
+
+    @media (min-width: 900px) {
+      .images { justify-content: center; overflow-x: visible; flex-wrap: wrap; }
+      .images img { flex: 0 1 auto; width: 300px; }
+    }
+
+    .product-info {
+      color: black;
+      margin: 30px auto;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 0.3);
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    .product-info ul {
+      list-style: none;
+      padding: 0;
+      font-size: 18px;
+      text-align: left;
+      display: inline-block;
+    }
+
+    .product-info li { margin-bottom: 8px; }
+    
+    button {
+      background-color: black;
+      color: #ffaed5;
+      border: none;
+      padding: 15px 30px;
+      font-size: 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 90%;
+      max-width: 300px;
+      transition: all 0.2s;
+    }
+
+    button:hover { transform: scale(1.05); }
+
+    .safer-use-btn {
+      display: inline-block;
+      background-color: black;
+      color: #ffaed5;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    #footer { font-size: 14px; padding: 20px; color: black; line-height: 1.6; }
+    #footer a { color: black; text-decoration: underline; }
+    .contact-section { margin-top: 30px; margin-bottom: 20px; color: black; }
+  </style>
+</head>
+
+<body>
+
+<!-- AGE GATE OVERLAY -->
+<div id="age-gate">
+  <div class="age-gate-content">
+    <h2>🔞</h2>
+    <h2>Altersprüfung</h2>
+    <p>Bist du über 18?</p>
+    
+    <!-- Diese neue Box umschließt die Buttons -->
+    <div class="age-gate-buttons">
+        <button class="age-btn confirm" onclick="confirmAge()">JA</button>
+        <button class="age-btn deny" onclick="denyAge()">NEIN</button>
+    </div>
+</div>
+</div>
+
+<div id="discount-overlay">
+  <div style="font-size: 40px; margin-bottom: 10px;">🦊🧰</div>
+  <h2 style="margin: 0; font-size: 24px;">GEHEIM-RABATT!</h2>
+  <p style="margin: 10px 0 10px 0; line-height: 1.4;">Du hast den Fuchs gefunden! Sichere dir jetzt <b>10% Rabatt</b> auf deine FUCHSBAUBOX</p>
+  <p style="font-size: 11px; color: #888; margin-bottom: 20px;">(Nicht mit anderen Rabatten kombinierbar)</p>
+  
+  <a href="https://www.paypal.com/ncp/payment/HQ47SA943UKG8" target="_blank" style="text-decoration: none;">
+    <button class="discount-btn">MIT -10% KAUFEN</button>
+  </a>
+  
+  <span class="close-overlay" onclick="closeDiscount()">Doch lieber zum Normalpreis</span>
+</div>
+
+<div id="glitch-trigger" onclick="fuchsAction()">🦊</div>
+
+<div id="main-content">
+    <div class="header-logo">
+      <a href="https://www.instagram.com/fuchsbaubox/" target="_blank">
+        <img src="XPICfbbschrift.png" alt="Fuchsbaubox">
+      </a>
+    </div>
+
+<span class="kiel-subtitle" style="color: white; background: black; padding: 2px 10px;">
+    GLÜCKWUNSCH! DU HAST DEN GEHEIMEN FUCHSBAU GEFUNDEN
+</span>
+    <div class="images">
+      <img src="XPICfbb1.jpg"><img src="XPICfbb2.jpg"><img src="XPICfbb3.jpg"><img src="XPICfbb4.jpg"><img src="XPICfbb5.jpg">
+      <img src="XPICfbb6.jpg"><img src="XPICfbb7.jpg"><img src="XPICfbb8.jpg"><img src="XPICfbb9.jpg">
+    </div>
+
+    <div class="product-info">
+      <h2>LIEFERUMFANG</h2>
+      <ul>
+        <li>• 1x Fuchsbaubox aus PLA</li>
+        <li>• 1x Metallkarte</li>
+        <li>• 1x Glasröhrchen</li>
+        <li>• 1x Kapsel mit Schraubverschluss</li>
+      </ul>
+      <p style="font-size: 26px; font-weight: bold; margin-top: 15px;">15,99 €</p>
+      <p>inkl. Versand | Lieferung in 2-3 Werktagen</p>
+    </div>
+
+   <div style="margin: 30px 0; position: relative;">
+  <!-- Der alte Preis: Schwarz und rot durchgestrichen -->
+  <span style="font-size: 22px; color: black; text-decoration: line-through; text-decoration-color: #ff0000; text-decoration-thickness: 4px; opacity: 0.7;">
+    15,99€
+  </span>
+  
+  <!-- Der neue Preis: Graffiti-Style direkt darunter -->
+  <div style="font-size: 48px; color: #ff0000; font-family: 'Arial Black', sans-serif; transform: rotate(-8deg) scale(1.1); text-shadow: 3px 3px 0px black; margin-top: -10px; font-weight: 900;">
+    10,99€
+  </div>
+  
+  <!-- Kleiner handgeschriebener Hinweis -->
+  <p style="color: black; font-weight: bold; font-size: 14px; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px;">
+    🔥 GEHEIMER FUCHS-PREIS 🔥
+  </p>
+</div>
+
+<!-- DER KAUFEN BUTTON (Wieder da!) -->
+<a href="DEIN_NEUER_PAYPAL_LINK_HIER" target="_blank" style="text-decoration: none;">
+  <button style="background-color: black; color: #ffaed5; border: none; padding: 15px 30px; font-size: 22px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 90%; max-width: 300px; transition: transform 0.2s;">
+    JETZT KAUFEN
+  </button>
+</a>
+
+
+    <div class="contact-section">
+      <span>Instagram: <a href="https://www.instagram.com/fuchsbaubox/" target="_blank" style="color: black; font-weight: bold; text-decoration: none;">@fuchsbaubox</a></span>
+      <br>
+      <span>Email: fuchsbaubox@gmail.com</span>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <a href="saferuse.html" class="safer-use-btn">SAFER USE GUIDE</a>
+    </div>
+
+    <div id="footer">
+      <hr style="margin: 20px auto; opacity: 0.3; border: 0.5px solid black;">
+      <h3>Impressum</h3>
+      <p>c/o IP-Management #9077, Ludwig-Erhard-Str. 18, 20459 Hamburg</p>
+      <p>
+        <a href="RTagb.html">AGB</a> | 
+        <a href="RTwiderrufsbelehrung.html">Widerruf</a> | 
+        <a href="RTdatenschutz.html">Datenschutz</a>
+      </p>
+    </div>
+</div>
+
+<script>
+// AGE GATE LOGIK
+function checkAge() {
+  if (!sessionStorage.getItem('age-verified')) {
+    document.getElementById('age-gate').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.getElementById('age-gate').style.display = 'none';
+    startFoxTimer();
+  }
+}
+function closeSecretModal() {
+  const modal = document.getElementById('secret-modal');
+  modal.style.opacity = '0';
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 500);
+}
+
+function confirmAge() {
+  sessionStorage.setItem('age-verified', 'true');
+  document.getElementById('age-gate').style.opacity = '0';
+  setTimeout(() => {
+    document.getElementById('age-gate').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    startFoxTimer();
+  }, 500);
+}
+
+function denyAge() {
+  alert("Keine Babies erlaubt.");
+  window.location.href = "https://youtu.be/PgxlLypw5_c?si=-Fpt6WuP526sbQiK";
+}
+
+// FUCHS TIMER LOGIK
+let firstRun = true;
+
+function startFoxTimer() {
+  const fox = document.getElementById('glitch-trigger');
+  if (!fox || !sessionStorage.getItem('age-verified')) return;
+  if (document.getElementById('discount-overlay').classList.contains('active')) return;
+
+  const waitTime = firstRun 
+    ? Math.floor(Math.random() * 2000) + 3000  
+    : Math.floor(Math.random() * 5000) + 10000; 
+
+  setTimeout(() => {
+    firstRun = false;
+    const padding = 60;
+    const side = Math.floor(Math.random() * 4); 
+    
+    fox.style.top = 'auto'; fox.style.right = 'auto'; fox.style.bottom = 'auto'; fox.style.left = 'auto';
+
+    if (side === 0) {
+      fox.style.top = padding + 'px';
+      fox.style.left = Math.random() * (window.innerWidth - padding * 2) + padding + 'px';
+    } else if (side === 1) {
+      fox.style.right = padding + 'px';
+      fox.style.top = Math.random() * (window.innerHeight - padding * 2) + padding + 'px';
+    } else if (side === 2) {
+      fox.style.bottom = padding + 'px';
+      fox.style.left = Math.random() * (window.innerWidth - padding * 2) + padding + 'px';
+    } else {
+      fox.style.left = padding + 'px';
+      fox.style.top = Math.random() * (window.innerHeight - padding * 2) + padding + 'px';
+    }
+
+    fox.classList.add('visible');
+    
+    setTimeout(() => {
+      fox.classList.remove('visible');
+      startFoxTimer();
+    }, 3000);
+
+  }, waitTime);
+}
+
+function fuchsAction() {
+  const body = document.body;
+  const trigger = document.getElementById('glitch-trigger');
+  const overlay = document.getElementById('discount-overlay');
+  
+  body.classList.add('glitch-active');
+  trigger.innerText = '💥';
+  
+  const rect = trigger.getBoundingClientRect();
+
+  for (let i = 0; i < 30; i++) {
+    createBox(rect.left, rect.top);
+  }
+
+  setTimeout(() => {
+    overlay.classList.add('active');
+  }, 800);
+
+  setTimeout(() => {
+    body.classList.remove('glitch-active');
+    trigger.innerText = '🦊';
+    trigger.classList.remove('visible');
+  }, 1000);
+}
+
+function closeDiscount() {
+  document.getElementById('discount-overlay').classList.remove('active');
+  startFoxTimer();
+}
+
+function createBox(startX, startY) {
+  const box = document.createElement('div');
+  box.className = 'flying-box';
+  box.innerText = '🧰';
+  box.style.left = startX + 'px';
+  box.style.top = startY + 'px';
+  const x = (Math.random() - 0.5) * 1500 + 'px'; 
+  const y = (Math.random() - 0.5) * 1500 + 'px'; 
+  const r = (Math.random() * 1080) + 'deg';
+  box.style.setProperty('--x', x);
+  box.style.setProperty('--y', y);
+  box.style.setProperty('--r', r);
+  document.body.appendChild(box);
+  setTimeout(() => { box.remove(); }, 3000);
+}
+
+// Initialisierung beim Laden
+window.onload = checkAge;
+</script>
+
+</body>
+</html>

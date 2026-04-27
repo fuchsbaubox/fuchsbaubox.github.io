@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Box verlässt Fuchsbau</title>
+  
+  <!-- Canvas-Confetti Library für den Effekt -->
+  <script src="https://cdn.jsdelivr.net"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #ffaed5;
+      color: black;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    /* Header Logo mit Pulsieren */
+    .header-logo {
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      width: 80%;
+      max-width: 600px;
+      height: auto;
+      animation: pulse-animation 3s infinite ease-in-out;
+      border: none;
+    }
+
+    @keyframes pulse-animation {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    .message-box {
+      background: rgba(255, 255, 255, 0.4);
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 500px;
+      margin: 40px auto;
+      border: 3px dashed black;
+    }
+
+    h1 { font-size: 28px; margin-bottom: 10px; }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: white;
+      background: black;
+      padding: 15px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.2s;
+    }
+
+    .back-link:hover {
+      transform: scale(1.05);
+    }
+
+    a {
+      color: black;
+      text-decoration: none;
+    }
+
+    .insta-link {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Logo verlinkt auf Instagram -->
+  <div class="header-logo">
+    <a href="https://www.instagram.com/fuchsbaubox/" target="_blank">
+      <img src="fbbschrift.png" alt="Fuchsbaubox">
+    </a>
+  </div>
+
+  <div class="message-box">
+    <h1>VIELEN DANK!</h1>
+    <p>Deine Zahlung war erfolgreich. Deine Fuchsbaubox macht sich in Kürze auf den Weg zu dir!</p>
+    <p>Du erhältst gleich eine Bestätigung per E-Mail von PayPal.</p>
+    <a href="index.html" class="back-link">ZURÜCK ZUM SHOP</a>
+  </div>
+
+  <!-- Verlinkter Instagram Name -->
+  <p style="font-size: 14px;">Hast du Fragen? Schreib uns bei Instagram 
+    <a href="https://www.instagram.com/fuchsbaubox/" target="_blank" class="insta-link">@fuchsbaubox</a>
+  </p>
+
+  <script>
+    // Konfetti-Regen beim Laden der Seite
+    window.onload = function() {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#000000', '#ffffff', '#ff83fa']
+      });
+    };
+  </script>
+
+</body>
+</html>

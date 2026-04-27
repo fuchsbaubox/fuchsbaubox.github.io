@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FUCHSBAUBOX | GOODIES</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background-color: #ffaed5; color: black; text-align: center; padding: 20px; }
+    
+    h1 { font-size: 40px; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 10px; }
+    .subtitle { font-weight: bold; opacity: 0.7; margin-bottom: 40px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; }
+    
+    .card { background: rgba(255, 255, 255, 0.3); padding: 20px; border-radius: 15px; border: 2px solid white; transition: transform 0.3s; }
+    .card:hover { transform: translateY(-10px); }
+    
+    .card img { width: 100%; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    
+    .dl-btn { background: black; color: #ffaed5; border: none; padding: 12px 25px; font-weight: bold; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; }
+    .dl-btn:hover { background: #333; }
+
+    .back-link { display: inline-block; margin-top: 50px; color: black; font-weight: bold; text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<h1>Goodies</h1>
+<div class="subtitle">Download den Fuchs für dein Handy</div>
+
+<div class="grid">
+  <!-- Beispiel Wallpaper 1 -->
+  <div class="card">
+    <img src="wp1_preview.png" alt="Wallpaper 1">
+    <h3>Wallpapper #01</h3>
+    <a href="wp1_full.png" download class="dl-btn">DOWNLOAD</a>
+  </div>
+
+  <!-- Beispiel Wallpaper 2 -->
+  <div class="card">
+    <img src="wp2_preview.png" alt="Wallpaper 2">
+    <h3>Wallpaper #02</h3>
+    <a href="wp2_full.png" download class="dl-btn">DOWNLOAD</a>
+  </div>
+
+  <!-- Beispiel Sticker Grafik -->
+  <div class="card">
+    <img src="sticker_preview.png" alt="Sticker Design">
+    <h3>Sticker Art (PNG)</h3>
+    <a href="sticker_full.png" download class="dl-btn">DOWNLOAD</a>
+  </div>
+</div>
+
+<a href="index.html" class="back-link">Zurück zum Shop</a>
+
+</body>
+</html>

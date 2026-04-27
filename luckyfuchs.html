@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SECRET DEAL - Fuchsbaubox</title>
+  
+  <!-- Favicon Fix -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org' viewBox='0 0 100 100'><text y='.9em' font-size='80'>🦊✨</text></svg>">
+
+  <!-- Font Awesome Icons & Konfetti Script -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
+  <script src="https://cdn.jsdelivr.net"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #ffaed5;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      overflow-x: hidden;
+    }
+
+    /* GLÜCKWUNSCH BANNER */
+    .win-banner {
+      background: black;
+      color: #ffaed5;
+      padding: 15px;
+      margin: 10px auto 20px auto;
+      max-width: 550px;
+      border-radius: 15px;
+      border: 3px dashed white;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .header-logo {
+      margin: 20px 0 0 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .header-logo img {
+      width: 90%;
+      max-width: 550px;
+      height: auto;
+      transition: transform 0.3s ease;
+      animation: pulse-animation 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse-animation {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    .header-logo img:hover {
+      animation: none;
+      transform: scale(1.08);
+    }
+
+    .kiel-subtitle {
+      display: block;      
+      color: black;
+      font-weight: bold;
+      font-size: 14px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+      opacity: 0.7;
+    }
+
+    .images {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 15px;
+      padding: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .images::-webkit-scrollbar { display: none; }
+
+    .images img {
+      flex: 0 0 85%;
+      max-width: 350px;
+      height: auto;
+      border-radius: 15px;
+      object-fit: cover;
+      scroll-snap-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      border: 2px solid white;
+    }
+
+    @media (min-width: 900px) {
+      .images { justify-content: center; overflow-x: visible; scroll-snap-type: none; flex-wrap: wrap; }
+      .images img { flex: 0 1 auto; width: 300px; }
+    }
+
+    .product-info {
+      color: black;
+      margin: 30px auto;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 0.5); /* Etwas heller für den Deal */
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .product-info ul {
+      list-style: none;
+      padding: 0;
+      font-size: 18px;
+      text-align: left;
+      display: inline-block;
+    }
+
+    .product-info li { margin-bottom: 8px; }
+    .fa-check { color: black; margin-right: 8px; }
+
+    /* PREIS ANPASSUNG */
+    .old-price { text-decoration: line-through; color: #666; font-size: 18px; margin-bottom: 0; }
+    .new-price { font-size: 32px; font-weight: bold; color: #e60000; margin-top: 0; }
+    
+    .buy-button { margin: 30px 0; }
+
+    button {
+      background-color: black;
+      color: #ffaed5;
+      border: none;
+      padding: 15px 30px;
+      font-size: 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 90%;
+      max-width: 300px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: all 0.2s;
+    }
+
+    button:hover { transform: scale(1.05); }
+
+    .instagram-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: black;
+      font-size: 45px;
+      text-decoration: none;
+    }
+
+    .safer-use-btn {
+      display: inline-block;
+      background-color: black;
+      color: #ffaed5;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    .safer-use-btn:hover { transform: scale(1.05); }
+
+    hr { margin: 40px auto; width: 80%; border: 0; height: 1px; background: black; }
+
+    #footer { font-size: 14px; padding: 20px; color: black; line-height: 1.6; }
+    #footer a { color: black; text-decoration: underline; }
+    
+    .contact-section { margin-top: 30px; margin-bottom: 20px; color: black; }
+    .contact-section a { color: black; text-decoration: none; font-weight: bold; }
+  </style>
+</head>
+
+<body>
+
+<div class="win-banner">
+  ✨ GLÜCKWUNSCH! ✨<br>
+  Du hast den geheimen Fuchsbau gefunden!<br>
+  Hier ist dein exklusiver Finder-Rabatt.
+</div>
+
+<div class="header-logo">
+  <a href="https://www.instagram.com/fuchsbaubox/" target="_blank">
+    <img src="fbbschrift.png" alt="Fuchsbaubox">
+  </a>
+</div>
+
+<div class="kiel-subtitle">Made in Kiel</div>
+
+<div class="images">
+  <img src="1.png" alt="Fuchsbaubox 1">
+  <img src="2.png" alt="Fuchsbaubox 2">
+  <img src="3.png" alt="Fuchsbaubox 3">
+</div>
+
+<div class="product-info">
+  <h2>LIEFERUMFANG</h2>
+  <ul>
+    <li><i class="fas fa-check"></i> 1x Fuchsbaubox aus PLA</li>
+    <li><i class="fas fa-check"></i> 1x Metallkarte</li>
+    <li><i class="fas fa-check"></i> 1x Glasröhrchen</li>
+    <li><i class="fas fa-check"></i> 2x Kapsel mit Schraubverschluss</li>
+  </ul>
+  
+  <div style="margin-top: 15px;">
+    <p class="old-price">Normalpreis: 15,99 €</p>
+    <p class="new-price">FINDER-PREIS: 13,99 €</p>
+  </div>
+  <p>inkl. Versand | Lieferung in 2-3 Werktagen</p>
+</div>
+
+<div class="buy-button">
+  <!-- HIER DEINEN 12,99€ PAYPAL LINK EINTRAGEN -->
+  <a href="DEIN_RABATT_LINK" target="_blank" style="text-decoration: none;">
+    <button>JETZT KAUFEN</button>
+  </a>
+  <br>
+  <a href="https://www.instagram.com/fuchsbaubox/" target="_blank" class="instagram-link">
+    <i class="fab fa-instagram"></i>
+  </a>
+</div>
+
+<hr>
+
+<div class="contact-section">
+  <span>Instagram: </span>
+  <a href="https://www.instagram.com/fuchsbaubox/" target="_blank">
+    <i class="fab fa-instagram"></i> @fuchsbaubox
+  </a>
+  <br>
+  <span>Email: fuchsbaubox@gmail.com</span>
+</div>
+
+<div style="margin-bottom: 20px;">
+  <a href="saferuse.html" class="safer-use-btn">SAFER USE GUIDE</a>
+</div>
+
+<div id="footer">
+  <hr style="margin: 20px auto; opacity: 0.3;">
+  <h3>Impressum</h3>
+  <p>c/o IP-Management #9077, Ludwig-Erhard-Str. 18, 20459 Hamburg</p>
+
+<p>
+  <a href="agb.html">AGB</a> | 
+  <a href="widerrufsbelehrung.html">Widerruf</a> | 
+  <a href="datenschutz.html">Datenschutz</a>
+</p>
+
+  <p style="margin-top: 20px; font-size: 12px; opacity: 0.8;">
+    Diese Website dient der Präsentation eines Produkts. Beim Klick auf den Kaufen-Button wirst du zu PayPal weitergeleitet.
+  </p>
+</div>
+
+<script>
+  window.onload = function() {
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#ffffff', '#000000', '#ffaed5']
+    });
+  };
+</script>
+
+</body>
+</html>

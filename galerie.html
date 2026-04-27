@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | FUCHSBAUBOX</title>
+    <link rel="stylesheet" href="style.css"> <!-- Deine bestehende CSS -->
+    <style>
+        /* BASIS STYLES */
+        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; overflow-x: hidden; background: radial-gradient(circle at center, #111 0%, #000 100%); }
+        
+        .gallery-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* NEON ÜBERSCHRIFT */
+        h1 { 
+            color: #ffaed5; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            text-align: center;
+            text-shadow: 0 0 10px #ffaed5, 0 0 20px #ff00ff;
+            animation: flicker 2s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 22%, 24%, 55% { opacity: 0.4; }
+        }
+
+        /* GRID SYSTEM */
+        .grid {
+            display: columns;
+            column-count: 3;
+            column-gap: 15px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* BILDER EFFEKTE */
+        .grid img {
+            width: 100%;
+            margin-bottom: 15px;
+            display: block;
+            cursor: pointer;
+            filter: grayscale(100%) contrast(120%);
+            border: 1px solid #333;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .grid img:hover {
+            filter: grayscale(0%) contrast(100%);
+            transform: scale(1.05) rotate(1deg);
+            border-color: #ffaed5;
+            box-shadow: 0 0 20px #ffaed5;
+            z-index: 10;
+        }
+
+        /* MODAL / LIGHTBOX CSS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 80%;
+            margin-top: 60px;
+            border: 3px solid #ffaed5;
+            box-shadow: 0 0 30px #ffaed5;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* NAVIGATION PFEILE */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffaed5;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            padding: 20px;
+            transition: 0.3s;
+            z-index: 1001;
+        }
+
+        .nav-btn:hover { color: #fff; text-shadow: 0 0 15px #ffaed5; }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #ffaed5;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) { .grid { column-count: 2; } .nav-btn { font-size: 40px; } }
+        @media (max-width: 480px) { .grid { column-count: 1; } }
+
+        .back-button {
+            display: inline-block;
+            margin: 20px;
+            color: #ffaed5;
+            text-decoration: none;
+            border: 1px solid #ffaed5;
+            padding: 10px 20px;
+            transition: 0.3s;
+        }
+        .back-button:hover { background: #ffaed5; color: #000; }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-button">← ZURÜCK ZUM SHOP</a>
+
+    <div class="gallery-container">
+        <h1>Fuchsbau Visuals</h1>
+        <div class="grid">
+            <img src="1.png" alt="Fuchsbau Box Detail">
+            <img src="2.png" alt="Rave Setup">
+            <img src="3.png" alt="3D Print Process">
+            <img src="4.png" alt="Community Shot">
+            <img src="5.png" alt="Pink Glow">
+        </div>
+    </div>
+
+    <!-- Modal für Großansicht -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <span class="nav-btn prev" id="prevBtn">&#10094;</span>
+        <span class="nav-btn next" id="nextBtn">&#10095;</span>
+        <img class="modal-content" id="fullImage">
+    </div>
+
+    <script>
+        const modal = document.getElementById("imageModal");
+        const fullImg = document.getElementById("fullImage");
+        const images = Array.from(document.querySelectorAll('.grid img'));
+        let currentIndex = 0;
+
+        // Funktion zum Updaten des Bildes im Modal
+        function updateModalImage(index) {
+            currentIndex = index;
+            fullImg.src = images[currentIndex].src;
+        }
+
+        // Öffnen Logik
+        images.forEach((img, index) => {
+            img.onclick = function() {
+                // Kurzer weißer Blitz-Effekt
+                document.body.style.backgroundColor = '#ffaed5';
+                setTimeout(() => { document.body.style.backgroundColor = ''; }, 40);
+                
+                modal.style.display = "block";
+                updateModalImage(index);
+            }
+        });
+
+        // Navigation: Weiter
+        document.getElementById("nextBtn").onclick = function(e) {
+            e.stopPropagation(); // Verhindert Schließen des Modals
+            let nextIndex = (currentIndex + 1) % images.length;
+            updateModalImage(nextIndex);
+        };
+
+        // Navigation: Zurück
+        document.getElementById("prevBtn").onclick = function(e) {
+            e.stopPropagation();
+            let prevIndex = (currentIndex - 1 + images.length) % images.length;
+            updateModalImage(prevIndex);
+        };
+
+        // Schließen Logik (beim Klick auf das X oder den Hintergrund)
+        document.querySelector(".close-modal").onclick = () => modal.style.display = "none";
+        modal.onclick = (e) => {
+            if (e.target === modal) modal.style.display = "none";
+        };
+
+        // Tastatur-Steuerung (Pfeiltasten)
+        document.addEventListener('keydown', (e) => {
+            if (modal.style.display === "block") {
+                if (e.key === "ArrowRight") document.getElementById("nextBtn").click();
+                if (e.key === "ArrowLeft") document.getElementById("prevBtn").click();
+                if (e.key === "Escape") modal.style.display = "none";
+            }
+        });
+    </script>
+
+</body>
+</html>
